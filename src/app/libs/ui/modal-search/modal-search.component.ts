@@ -7,7 +7,6 @@ import {
 import { FormBuilder, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
 @Component({
   selector: 'app-modal-search',
   imports: [ReactiveFormsModule],
@@ -36,14 +35,6 @@ export class ModalSearchComponent {
     filters: this.fb.array(this.filterOptions.map(() => false)),
     scopes: this.fb.array(this.searchScopes.map(() => false)),
   });
-
-  get filtersArray() {
-    return this.form.controls.filters as FormArray;
-  }
-
-  get scopesArray() {
-    return this.form.controls.scopes as FormArray;
-  }
 
   constructor() {
     this.form.valueChanges

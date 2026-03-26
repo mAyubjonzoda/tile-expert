@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, OnDestroy, Renderer2, signal, DestroyRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  OnDestroy,
+  Renderer2,
+  signal,
+  DestroyRef,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SvgIconComponent } from '../../ui/svg-icon/svg-icon.component';
 import { ModalSearchComponent } from '../../ui/modal-search/modal-search.component';
@@ -8,17 +17,21 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
-  imports: [SvgIconComponent, ModalSearchComponent, RouterLink, ReactiveFormsModule],
+  imports: [
+    SvgIconComponent,
+    ModalSearchComponent,
+    RouterLink,
+    ReactiveFormsModule,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
   private readonly renderer = inject(Renderer2);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly searchControl = new FormControl('', {nonNullable: true});
+  readonly searchControl = new FormControl('', { nonNullable: true });
 
   readonly navItems = [
     {
@@ -66,24 +79,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   constructor() {
-  this.searchControl.valueChanges
-    .pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      takeUntilDestroyed(this.destroyRef)
-    )
-    .subscribe(value => {
-      console.log(value);
-    });
-}
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((value) => {
+        console.log(value);
+      });
+  }
 
   ngOnInit() {
-    this.clickListener = this.renderer.listen('document', 'click', (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (!target.closest('.click')) {
-        this.hideSearchInput();
-      }
-    });
+    this.clickListener = this.renderer.listen(
+      'document',
+      'click',
+      (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (!target.closest('.click')) {
+          this.hideSearchInput();
+        }
+      },
+    );
   }
 
   ngOnDestroy() {

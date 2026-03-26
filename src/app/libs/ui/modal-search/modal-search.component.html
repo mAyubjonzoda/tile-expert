@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="modal-search">
   <div class="modal-search__history-section">
     <h1 class="modal-search__history-title">История</h1>
 
@@ -31,7 +31,6 @@
       </div>
     </div>
 
-    <!-- Filters -->
     <div class="modal-search__checkbox-group" formArrayName="filters">
       @for (i of filterOptions; track $index; let idx = $index) {
         <div class="modal-search__checkbox-item">

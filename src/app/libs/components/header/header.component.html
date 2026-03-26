@@ -1,25 +1,30 @@
 <header class="header">
-
   <div class="header__logo">
-    <svg icon="menu" class="header__logo-menu" ></svg>
-    <img src="assets/imgs/logo.png"  class="header__logo-icon"><img/>
+    <svg icon="menu" class="header__logo-menu"></svg>
+    <img src="assets/imgs/logo.png" class="header__logo-icon" /><img />
   </div>
 
   <nav class="header__nav-wrapper">
     <div class="header__nav mobile-none">
       @for (item of navItems; track $index) {
-      <a [routerLink]="item.url" class="header__nav-link">
-        <svg [icon]="item.icon" class="header__icon"></svg>
-        {{ item.text }}
-      </a>
+        <a [routerLink]="item.url" class="header__nav-link">
+          <svg [icon]="item.icon" class="header__icon"></svg>
+          {{ item.text }}
+        </a>
       }
     </div>
 
-    <span class="header__search click" [class.header__search--visible]="isSearchInputVisible()">
+    <span
+      class="header__search click"
+      [class.header__search--visible]="isSearchInputVisible()"
+    >
       @if (isSearchInputVisible()) {
-      <button class="header__btn header__btn--search" (click)="hideSearchInput()">
-        <svg icon="arrow" class="header__icon"></svg>
-      </button>
+        <button
+          class="header__btn header__btn--search"
+          (click)="hideSearchInput()"
+        >
+          <svg icon="arrow" class="header__icon"></svg>
+        </button>
       }
 
       <input
@@ -32,7 +37,7 @@
       />
     </span>
     @if (isSearchModalVisible()) {
-    <app-modal-search class="click"></app-modal-search>
+      <app-modal-search class="click"></app-modal-search>
     }
 
     <div class="header__actions">

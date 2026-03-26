@@ -8,9 +8,8 @@ describe('ModalSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalSearchComponent]
-    })
-    .compileComponents();
+      imports: [ModalSearchComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ModalSearchComponent);
     component = fixture.componentInstance;
