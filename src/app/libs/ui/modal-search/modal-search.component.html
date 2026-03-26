@@ -1,0 +1,65 @@
+<form [formGroup]="form">
+  <div class="modal-search__history-section">
+    <h1 class="modal-search__history-title">История</h1>
+
+    <div class="modal-search__history-list">
+      @for (item of searchHistoryItems; track $index) {
+        <div class="modal-search__history-item">{{ item }}</div>
+      }
+    </div>
+  </div>
+
+  <div class="modal-search__filters-section">
+    <div class="modal-search__input-group">
+      <label class="modal-search__input-label">Автор</label>
+
+      <div class="modal-search__input-wrapper">
+        <input
+          type="text"
+          class="modal-search__input"
+          placeholder="Имя или должность"
+          formControlName="author"
+        />
+
+        <button
+          type="button"
+          class="modal-search__input-btn"
+          (click)="selectMe()"
+        >
+          Я
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="modal-search__checkbox-group" formArrayName="filters">
+      @for (i of filterOptions; track $index; let idx = $index) {
+        <div class="modal-search__checkbox-item">
+          <input
+            type="checkbox"
+            class="modal-search__checkbox"
+            [formControlName]="idx"
+          />
+          <label class="modal-search__checkbox-label">{{ i }}</label>
+        </div>
+      }
+    </div>
+
+    <div class="modal-search__filter-group">
+      <span class="modal-search__filter-title">Только</span>
+
+      <div class="modal-search__checkbox-group" formArrayName="scopes">
+        @for (i of searchScopes; track $index; let idx = $index) {
+          <div class="modal-search__checkbox-item">
+            <input
+              type="checkbox"
+              class="modal-search__checkbox"
+              [formControlName]="idx"
+            />
+            <label class="modal-search__checkbox-label">{{ i }}</label>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</form>

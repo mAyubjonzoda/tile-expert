@@ -1,0 +1,60 @@
+<header class="header">
+
+  <div class="header__logo">
+    <svg icon="menu" class="header__logo-menu" ></svg>
+    <img src="assets/imgs/logo.png"  class="header__logo-icon"><img/>
+  </div>
+
+  <nav class="header__nav-wrapper">
+    <div class="header__nav mobile-none">
+      @for (item of navItems; track $index) {
+      <a [routerLink]="item.url" class="header__nav-link">
+        <svg [icon]="item.icon" class="header__icon"></svg>
+        {{ item.text }}
+      </a>
+      }
+    </div>
+
+    <span class="header__search click" [class.header__search--visible]="isSearchInputVisible()">
+      @if (isSearchInputVisible()) {
+      <button class="header__btn header__btn--search" (click)="hideSearchInput()">
+        <svg icon="arrow" class="header__icon"></svg>
+      </button>
+      }
+
+      <input
+        type="text"
+        class="header__search-input click"
+        placeholder="Поиск"
+        [formControl]="searchControl"
+        [class.header__search-input--visible]="isSearchInputVisible()"
+        (click)="showSearchModal()"
+      />
+    </span>
+    @if (isSearchModalVisible()) {
+    <app-modal-search class="click"></app-modal-search>
+    }
+
+    <div class="header__actions">
+      <button class="header__btn click" (click)="showSearchInput()">
+        <svg icon="search" class="header__icon"></svg>
+      </button>
+      <a routerLink="/" class="header__history-link">
+        <svg icon="history" class="header__icon"></svg>
+      </a>
+      <button class="header__btn">
+        <svg icon="plus" class="header__icon"></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="header__user">
+    <button class="header__btn--notification">
+      <svg icon="notifications" class="header__icon"></svg>
+      <span class="header__notification-dot">32</span>
+    </button>
+    <button class="header__btn mobile-none">
+      <img src="assets/imgs/ava.png" alt="ava" class="header__user-avatar" />
+    </button>
+  </div>
+</header>
