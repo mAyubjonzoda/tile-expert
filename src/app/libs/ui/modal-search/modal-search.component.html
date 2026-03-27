@@ -1,11 +1,12 @@
 <form [formGroup]="form" class="modal-search">
   <div class="modal-search__history-section">
-    <h1 class="modal-search__history-title">История</h1>
-
-    <div class="modal-search__history-list">
-      @for (item of searchHistoryItems; track $index) {
-        <div class="modal-search__history-item">{{ item }}</div>
-      }
+    <span class="modal-search__history-title">История</span>
+    <div class="modal-search__history-wrapper">
+      <div class="modal-search__history-list">
+        @for (item of searchHistoryItems; track $index) {
+          <div class="modal-search__history-item">{{ item }}</div>
+        }
+      </div>
     </div>
   </div>
 
@@ -31,7 +32,7 @@
       </div>
     </div>
 
-    <div class="modal-search__checkbox-group" formArrayName="filters">
+    <div class="modal-search__checkbox-group mt-16" formArrayName="filters">
       @for (i of filterOptions; track $index; let idx = $index) {
         <div class="modal-search__checkbox-item">
           <input
@@ -44,7 +45,7 @@
       }
     </div>
 
-    <div class="modal-search__filter-group">
+    <div class="modal-search__filter-group mt-20">
       <span class="modal-search__filter-title">Только</span>
 
       <div class="modal-search__checkbox-group" formArrayName="scopes">

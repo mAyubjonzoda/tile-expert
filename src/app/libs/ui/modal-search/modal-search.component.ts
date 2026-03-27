@@ -4,7 +4,7 @@ import {
   DestroyRef,
   inject,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({

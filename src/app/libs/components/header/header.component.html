@@ -28,12 +28,13 @@
       }
 
       <input
+        #searchInput
         type="text"
         class="header__search-input click"
         placeholder="Поиск"
         [formControl]="searchControl"
         [class.header__search-input--visible]="isSearchInputVisible()"
-        (click)="showSearchModal()"
+        (focus)="showSearchModal()"
       />
     </span>
     @if (isSearchModalVisible()) {

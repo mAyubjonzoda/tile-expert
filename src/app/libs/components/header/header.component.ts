@@ -3,16 +3,16 @@ import {
   Component,
   inject,
   OnInit,
-  OnDestroy,
-  Renderer2,
   signal,
+  ElementRef,
   DestroyRef,
+  viewChild,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SvgIconComponent } from '../../ui/svg-icon/svg-icon.component';
 import { ModalSearchComponent } from '../../ui/modal-search/modal-search.component';
 import { RouterLink } from '@angular/router';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, fromEvent } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -27,56 +27,23 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  private readonly renderer = inject(Renderer2);
+export class HeaderComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
+
+  readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
   readonly searchControl = new FormControl('', { nonNullable: true });
 
-  readonly navItems = [
-    {
-      icon: 'link',
-      text: 'Ссылки',
-      url: '#',
-    },
-    {
-      icon: 'contact',
-      text: 'Контакты',
-      url: '#',
-    },
-    {
-      icon: 'tag',
-      text: 'Теги',
-      url: '#',
-    },
-    {
-      icon: 'star',
-      text: 'Избранное',
-      url: '#',
-    },
-    {
-      icon: 'history',
-      text: 'Посещения',
-      url: '#',
-    },
-  ];
-
   isSearchInputVisible = signal<boolean>(false);
   isSearchModalVisible = signal<boolean>(false);
-  private clickListener?: () => void;
 
-  showSearchModal() {
-    this.isSearchModalVisible.set(true);
-  }
-
-  showSearchInput() {
-    this.isSearchInputVisible.set(true);
-  }
-
-  hideSearchInput() {
-    this.isSearchInputVisible.set(false);
-    this.isSearchModalVisible.set(false);
-  }
+  readonly navItems = [
+    { icon: 'link', text: 'Ссылки', url: '#' },
+    { icon: 'contact', text: 'Контакты', url: '#' },
+    { icon: 'tag', text: 'Теги', url: '#' },
+    { icon: 'star', text: 'Избранное', url: '#' },
+    { icon: 'history', text: 'Посещения', url: '#' },
+  ];
 
   constructor() {
     this.searchControl.valueChanges
@@ -91,19 +58,34 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.clickListener = this.renderer.listen(
-      'document',
-      'click',
-      (event: MouseEvent) => {
-        const target = event.target as HTMLElement;
-        if (!target.closest('.click')) {
-          this.hideSearchInput();
-        }
-      },
-    );
+    fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        filter((event) => {
+          const target = event.target as HTMLElement;
+          return !target.closest('.click');
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => {
+        this.hideSearchInput();
+      });
   }
 
-  ngOnDestroy() {
-    this.clickListener?.();
+  showSearchInput() {
+    this.isSearchInputVisible.set(true);
+    if (window.innerWidth <= 768) {
+      setTimeout(() => {
+        this.searchInput()?.nativeElement?.focus();
+      }, 100);
+    }
+  }
+
+  showSearchModal() {
+    this.isSearchModalVisible.set(true);
+  }
+
+  hideSearchInput() {
+    this.isSearchInputVisible.set(false);
+    this.isSearchModalVisible.set(false);
   }
 }
